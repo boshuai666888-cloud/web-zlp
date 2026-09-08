@@ -1,0 +1,141 @@
+/* ============================================================
+   style.css —— 个人名片页面的全部样式（表现层）
+   说明：本文件通过 class 选择器与 index.html 中的结构一一对应，
+         页面展示效果全部由这里控制，清晰分离、易于维护。
+   ============================================================ */
+
+/* ---------- 1. 全局重置与主题变量 ---------- */
+* {
+    margin: 0;                          /* 清除浏览器默认外边距 */
+    padding: 0;                         /* 清除浏览器默认内边距 */
+    box-sizing: border-box;             /* 宽高 = 内容 + 内边距 + 边框，方便尺寸计算 */
+}
+
+/* CSS 自定义属性：集中定义主题配色与阴影，后期调整只需改这一处 */
+:root {
+    --primary-color: #4f7cff;           /* 主题蓝：头像渐变与分隔线用色 */
+    --text-color: #2f3542;              /* 主文字颜色 */
+    --sub-text-color: #7a8294;          /* 次要文字颜色（职位、联系方式） */
+    --card-bg: #ffffff;                 /* 卡片背景色 */
+    /* 柔和阴影：一大一小两层叠加，过渡自然不生硬 */
+    --soft-shadow: 0 12px 40px rgba(47, 53, 66, 0.10),
+                   0 2px 8px rgba(47, 53, 66, 0.06);
+    /* 悬停时加深的阴影 */
+    --hover-shadow: 0 20px 50px rgba(47, 53, 66, 0.16),
+                    0 4px 12px rgba(47, 53, 66, 0.08);
+}
+
+/* ---------- 2. 页面整体布局：浅色渐变背景 + 卡片居中 ---------- */
+body {
+    min-height: 100vh;                  /* 撑满整个浏览器视口高度 */
+    display: flex;                      /* 启动弹性布局 */
+    align-items: center;                /* 垂直方向居中 */
+    justify-content: center;            /* 水平方向居中 */
+    padding: 20px;                      /* 防止卡片在极小屏幕上贴边 */
+    /* 简约浅色渐变背景，营造干净氛围 */
+    background: linear-gradient(135deg, #eef2ff 0%, #f7f8fc 60%, #eef2ff 100%);
+    /* 中英文字体栈：优先中文系统字体，缺失时回退到通用无衬线 */
+    font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased; /* WebKit 内核下的字体平滑 */
+}
+
+/* ---------- 3. 名片卡片 ---------- */
+.card {
+    width: 340px;                       /* 固定卡片宽度 */
+    padding: 42px 34px 34px;            /* 内边距：上大下小，视觉重心更稳 */
+    background: var(--card-bg);         /* 纯白背景，与页面浅色背景区分 */
+    border-radius: 12px;                /* ★ 需求：12px 圆角 */
+    box-shadow: var(--soft-shadow);     /* ★ 需求：柔和阴影 */
+    text-align: center;                 /* 卡片内部内容水平居中 */
+    /* ★ 需求：悬停过渡动画 —— 0.3 秒缓动，让「上浮」与「阴影变化」平滑自然 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 鼠标悬停：卡片轻微向上浮起并加深阴影，增强立体层次感 */
+.card:hover {
+    transform: translateY(-8px);        /* ★ 需求：向上偏移 8px，轻微上浮 */
+    box-shadow: var(--hover-shadow);    /* 阴影同步加深，上浮感更真实 */
+}
+
+/* ---------- 4. 圆形头像 ---------- */
+.avatar-wrap {
+    margin-bottom: 18px;                /* 与下方姓名保持间距 */
+}
+
+.avatar {
+    width: 110px;                       /* 头像直径 */
+    height: 110px;
+    margin: 0 auto;                     /* 水平居中 */
+    border-radius: 50%;                 /* ★ 需求：圆形头像 */
+    border: 4px solid #ffffff;          /* 白色描边，与卡片背景形成层次感 */
+    /* 蓝紫渐变填充，简约而不单调 */
+    background: linear-gradient(135deg, #4f7cff 0%, #7aa2ff 60%, #a0b8ff 100%);
+    color: #ffffff;                     /* 首字为白色 */
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 102px;                 /* 110 - 4*2（上下边框）= 102，使文字垂直居中 */
+    text-align: center;
+    box-shadow: 0 6px 16px rgba(79, 124, 255, 0.28); /* 头像下方淡淡的彩色投影 */
+    overflow:hidden;                      /* 防止头像内容溢出圆形边界 */
+}
+
+/* ---------- 5. 姓名与职位 ---------- */
+.name {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;                /* 稍大的字间距，更显简约大气 */
+    margin-bottom: 6px;
+}
+
+.job-title {
+    font-size: 14px;
+    color: var(--sub-text-color);       /* 次要灰色，衬托主文字的姓名 */
+    letter-spacing: 1px;
+}
+
+/* ---------- 6. 分隔线 ---------- */
+.divider {
+    width: 44px;                        /* 短横线造型，呼应简约风格 */
+    height: 3px;
+    margin: 22px auto;                  /* 水平居中并留出上下间距 */
+    border-radius: 99px;                /* 两端圆润 */
+    background: linear-gradient(90deg, #4f7cff, #a0b8ff); /* 渐变分隔线呼应主题 */
+}
+
+/* ---------- 7. 联系方式列表 ---------- */
+.contact-list {
+    list-style: none;                   /* 去掉 <ul> 默认的圆点 */
+}
+
+.contact-item {
+    display: flex;                      /* 图标与文字横向排布 */
+    align-items: center;
+    justify-content: center;            /* 让整行在卡片内居中 */
+    gap: 10px;                          /* 图标与文字之间的间距 */
+    margin: 12px auto;                  /* 每一项之间的垂直间距 */
+    font-size: 14px;
+    color: var(--sub-text-color);
+}
+
+/* 内联 SVG 图标：随文字颜色显示 */
+.icon {
+    width: 16px;
+    height: 16px;
+    fill: none;                         /* 线条型图标：不填充 */
+    stroke: currentColor;               /* 描边色跟随文字色 */
+    stroke-width: 2;
+    stroke-linecap: round;              /* 线条端点与拐角圆润 */
+    stroke-linejoin: round;
+}
+
+/* 联系方式的链接文字 */
+.contact-item a {
+    color: var(--sub-text-color);
+    text-decoration: none;              /* 去掉默认下划线 */
+    transition: color 0.25s ease;       /* 悬停变色时平滑过渡 */
+}
+
+.contact-item a:hover {
+    color: var(--primary-color);        /* 悬停高亮为主题蓝，增强可点击感 */
+}
